@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Tienda Futurista</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Mi Tienda</h1>
+    <p>Ropa de segunda mano / Tu estilo</p>
+
+    <!-- Carrito desplegable -->
+    <div id="carrito-header" class="carrito-header">
+        <button id="btn-carrito" class="btn-carrito">
+        🛒 Carrito (<span id="carrito-count">0</span>)
+        </button>
+        <div id="menu-carrito" class="menu-carrito">
+        <ul id="lista-carrito"></ul>
+        <p>Total: €<span id="total">0.00</span></p>
+        <a id="btn-pagar" href="#" target="_blank" class="btn">Pagar con PayPal</a>
+        </div>
+    </div>
+
+    <!-- Menú de pestañas -->
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="inicio">Inicio</button>
+        <button class="tab-btn" data-tab="novedad">Novedad</button>
+        <button class="tab-btn" data-tab="ofertas">Ofertas</button>
+    </nav>
+  </header>
+
+  <!-- Contenido de pestañas -->
+  <main>
+    <div class="tab-content" id="inicio">
+        <section id="productos" class="productos-grid"></section>
+    </div>
+
+    <div class="tab-content" id="novedad" style="display:none;">
+        <section id="productos-novedad" class="productos-grid"></section>
+    </div>
+
+    <div class="tab-content" id="ofertas" style="display:none;">
+        <section id="productos-ofertas" class="productos-grid"></section>
+    </div>
+
+    <div class="tab-content" id="carrito-tab" style="display:none;">
+        <aside id="carrito" class="carrito">
+        <h2>Tu Carrito</h2>
+        <ul id="lista-carrito"></ul>
+        <p>Total: €<span id="total">0.00</span></p>
+        <a id="btn-pagar" href="#" target="_blank" class="btn">Pagar con PayPal</a>
+        </aside>
+    </div>
+  </main>
+
+
+  <!-- Footer -->
+  <footer>
+    <p>Contacta: @tuInstagram | Hecho con ❤️</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/carrito.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Script de pestañas -->
+<script>
+  // Seleccionar todos los botones de pestañas y los contenidos
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Quitar clase 'active' a todos los botones
+      tabButtons.forEach(b => b.classList.remove('active'));
+      // Activar el botón clicado
+      btn.classList.add('active');
+
+      // Ocultar todos los contenidos
+      tabContents.forEach(tab => tab.style.display = 'none');
+
+      // Mostrar contenido correspondiente
+      const target = document.getElementById(btn.dataset.tab);
+      if (target) target.style.display = 'block';
+    });
+  });
+
+  // Opcional: mostrar la pestaña inicial 'Inicio' al cargar la página
+  document.addEventListener('DOMContentLoaded', () => {
+    const inicioTab = document.querySelector('.tab-btn[data-tab="inicio"]');
+    if (inicioTab) inicioTab.click();
+  });
+</script>
+
+
+</body>
+</html>

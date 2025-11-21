@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "nombre": "Camiseta Azul",
+    "precio": 20,
+    "talla": "M",
+    "estado": "Nuevo",
+    "color": "Azul",
+    "descripcion": "Camiseta 100% algodón, cómoda y ligera.",
+    "imagen": "assets/img/camiseta-azul.jpg",
+    "imagenes": [
+      "assets/img/camiseta-azul.jpg",
+      "assets/img/camiseta-azul-2.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Pantalón Negro",
+    "precio": 35,
+    "talla": "L",
+    "estado": "Usado",
+    "color": "Negro",
+    "descripcion": "Pantalón elegante, perfecto para oficina o eventos.",
+    "imagen": "assets/img/pantalon-negro.jpg"
+  },
+  {
+    "id": 3,
+    "nombre": "Sudadera Gris",
+    "precio": 25,
+    "talla": "S",
+    "estado": "Nuevo",
+    "color": "Gris",
+    "descripcion": "Sudadera con capucha, ideal para días frescos.",
+    "imagen": "assets/img/sudadera-gris.jpg",
+    "imagenes": [
+      "assets/img/sudadera-gris.jpg",
+      "assets/img/sudadera-gris-2.jpg",
+      "assets/img/sudadera-gris-3.jpg"
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Zapatos Deportivos",
+    "precio": 50,
+    "talla": "42",
+    "estado": "Nuevo",
+    "color": "Blanco",
+    "descripcion": "Zapatos cómodos para correr o actividades diarias.",
+    "imagen": "assets/img/zapatos-blancos.jpg"
+  }
+]
