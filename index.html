@@ -5,57 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Tienda Futurista</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/carrito.css">
 </head>
 <body>
   <!-- Header -->
   <header>
-      <h1><a href="index.html" class="logo">Mi Tienda</a></h1>
 
-      <!-- Carrito desplegable -->
-      <div id="carrito-header" class="carrito-header">
-          <button id="btn-carrito" class="btn-carrito">
-          🛒 Carrito (<span id="carrito-count">0</span>)
-          </button>
-          <div id="menu-carrito" class="menu-carrito">
-          <ul id="lista-carrito"></ul>
-          <p>Total: €<span id="total">0.00</span></p>
-          <a id="btn-pagar" href="#" target="_blank" class="btn">Pagar con PayPal</a>
-          </div>
+    <!-- LOGO -->
+    <h1 class="logo-container">
+      <a href="index.html" class="logo">Mi Tienda</a>
+    </h1>
+
+    <!-- CARRITO -->
+    <div class="carrito-wrapper">
+      <button id="btn-carrito" class="btn-carrito">
+        🛒 <span id="carrito-count">0</span>
+      </button>
+
+      <div id="menu-carrito" class="menu-carrito">
+        <!-- Header del carrito -->
+        <div class="menu-carrito-header">
+          <span class="carrito-titulo">Carrito</span>
+          <button id="btn-cerrar-carrito" class="btn-cerrar">×</button>
+        </div>
+
+        <!-- Lista de productos -->
+        <ul id="lista-carrito"></ul>
+
+        <!-- Total -->
+        <p class="total-line"><span id="total">0.00</span></p>
+
+        <!-- Botón pagar -->
+        <a id="btn-pagar" href="#" target="_blank" class="btn-pagar">
+          Pagar con PayPal
+        </a>
       </div>
+    </div>
 
-      <!-- Menú de pestañas -->
-      <nav class="tabs">
-          <button class="tab-btn active" data-tab="inicio">Inicio</button>
-          <button class="tab-btn" data-tab="novedad">Novedad</button>
-          <button class="tab-btn" data-tab="ofertas">Ofertas</button>
-      </nav>
+    <!-- MENÚ -->
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="inicio">Inicio</button>
+      <button class="tab-btn" data-tab="novedad">Novedad</button>
+      <button class="tab-btn" data-tab="ofertas">Ofertas</button>
+    </nav>
+
   </header>
-
 
   <!-- Contenido de pestañas -->
   <main>
     <div class="tab-content" id="inicio">
-        <section id="productos" class="productos-grid"></section>
+      <section id="productos" class="productos-grid"></section>
     </div>
 
     <div class="tab-content" id="novedad" style="display:none;">
-        <section id="productos-novedad" class="productos-grid"></section>
+      <section id="productos-novedad" class="productos-grid"></section>
     </div>
 
     <div class="tab-content" id="ofertas" style="display:none;">
-        <section id="productos-ofertas" class="productos-grid"></section>
-    </div>
-
-    <div class="tab-content" id="carrito-tab" style="display:none;">
-        <aside id="carrito" class="carrito">
-        <h2>Tu Carrito</h2>
-        <ul id="lista-carrito"></ul>
-        <p>Total: €<span id="total">0.00</span></p>
-        <a id="btn-pagar" href="#" target="_blank" class="btn">Pagar con PayPal</a>
-        </aside>
+      <section id="productos-ofertas" class="productos-grid"></section>
     </div>
   </main>
-
 
   <!-- Footer -->
   <footer>
@@ -66,36 +75,54 @@
   <script src="assets/js/carrito.js"></script>
   <script src="assets/js/main.js"></script>
 
-  <!-- Script de pestañas -->
+  <!-- Script de pestañas y carrito -->
 <script>
-  // Seleccionar todos los botones de pestañas y los contenidos
+  // Selección de pestañas
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Quitar clase 'active' a todos los botones
       tabButtons.forEach(b => b.classList.remove('active'));
-      // Activar el botón clicado
       btn.classList.add('active');
 
-      // Ocultar todos los contenidos
       tabContents.forEach(tab => tab.style.display = 'none');
-
-      // Mostrar contenido correspondiente
       const target = document.getElementById(btn.dataset.tab);
-      if (target) target.style.display = 'block';
+      if(target) target.style.display = 'block';
     });
   });
 
-  // Mostrar la pestaña inicial 'Inicio' al cargar la página
+  // Mostrar pestaña inicial
   document.addEventListener('DOMContentLoaded', () => {
     const inicioTab = document.querySelector('.tab-btn[data-tab="inicio"]');
     if (inicioTab) inicioTab.click();
   });
 
-</script>
+  // Carrito y botón cerrar
+  window.btnCarrito = window.btnCarrito || document.getElementById('btn-carrito');
+  window.menuCarrito = window.menuCarrito || document.getElementById('menu-carrito');
+  window.btnCerrar = window.btnCerrar || document.getElementById('btn-cerrar-carrito');
 
+  if(window.btnCarrito && window.menuCarrito && window.btnCerrar) {
+    window.btnCarrito.addEventListener('click', () => {
+      window.menuCarrito.classList.toggle('visible');
+      window.btnCerrar.style.display = window.menuCarrito.classList.contains('visible') ? 'flex' : 'none';
+    });
+
+    window.btnCerrar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.menuCarrito.classList.remove('visible');
+      window.btnCerrar.style.display = 'none';
+    });
+
+    document.addEventListener('click', (e) => {
+      if(!window.menuCarrito.contains(e.target) && e.target !== window.btnCarrito){
+        window.menuCarrito.classList.remove('visible');
+        window.btnCerrar.style.display = 'none';
+      }
+    });
+  }
+</script>
 
 </body>
 </html>
