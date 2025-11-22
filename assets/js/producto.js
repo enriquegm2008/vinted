@@ -6,6 +6,9 @@ const contenedorImagenes = document.querySelector('.producto-imagenes .carrusel'
 const miniaturasCont = document.querySelector('.producto-imagenes .miniaturas');
 const infoProducto = document.querySelector('.producto-info');
 
+let indexActual = 0;
+let imagenes = [];
+
 // -------------------- Cargar producto desde JSON --------------------
 fetch('productos.json')
   .then(res => res.json())
@@ -16,37 +19,66 @@ fetch('productos.json')
       return;
     }
 
-    // Carrusel de imágenes
-    if(producto.imagenes && producto.imagenes.length > 0){
-      producto.imagenes.forEach((imgUrl, i) => {
-        const img = document.createElement('img');
-        img.src = imgUrl;
-        img.alt = producto.nombre;
-        if(i === 0) img.classList.add('active');
-        contenedorImagenes.appendChild(img);
+    // Cargar imágenes del producto
+    imagenes = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes : [producto.imagen];
 
-        const thumb = document.createElement('img');
-        thumb.src = imgUrl;
-        thumb.alt = producto.nombre;
-        if(i === 0) thumb.classList.add('selected');
-        miniaturasCont.appendChild(thumb);
+    // Limpiar contenedor
+    contenedorImagenes.innerHTML = '';
 
-        thumb.addEventListener('click', () => {
-          document.querySelectorAll('.carrusel img').forEach(im => im.classList.remove('active'));
-          document.querySelectorAll('.miniaturas img').forEach(m => m.classList.remove('selected'));
-          img.classList.add('active');
-          thumb.classList.add('selected');
-        });
-      });
-    } else {
-      const img = document.createElement('img');
-      img.src = producto.imagen;
-      img.alt = producto.nombre;
-      img.classList.add('active');
-      contenedorImagenes.appendChild(img);
+    // Imagen principal
+    const imgPrincipal = document.createElement('img');
+    imgPrincipal.classList.add('imagen-activa');
+    imgPrincipal.src = imagenes[indexActual];
+    imgPrincipal.alt = producto.nombre;
+    contenedorImagenes.appendChild(imgPrincipal);
+
+    // Flechas
+    const flechaIzq = document.createElement('button');
+    flechaIzq.classList.add('flecha', 'izquierda');
+    flechaIzq.innerHTML = '&#10094;';
+    contenedorImagenes.appendChild(flechaIzq);
+
+    const flechaDer = document.createElement('button');
+    flechaDer.classList.add('flecha', 'derecha');
+    flechaDer.innerHTML = '&#10095;';
+    contenedorImagenes.appendChild(flechaDer);
+
+    // Funciones flechas
+    flechaIzq.addEventListener('click', () => {
+      indexActual = (indexActual - 1 + imagenes.length) % imagenes.length;
+      actualizarCarrusel();
+    });
+    flechaDer.addEventListener('click', () => {
+      indexActual = (indexActual + 1) % imagenes.length;
+      actualizarCarrusel();
+    });
+
+    function actualizarCarrusel() {
+      imgPrincipal.src = imagenes[indexActual];
+      actualizarMiniaturas();
     }
 
-    // Info producto
+    // Miniaturas
+    miniaturasCont.innerHTML = '';
+    imagenes.forEach((imgUrl, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = imgUrl;
+      thumb.alt = producto.nombre;
+      if(i === indexActual) thumb.classList.add('selected');
+      thumb.addEventListener('click', () => {
+        indexActual = i;
+        actualizarCarrusel();
+      });
+      miniaturasCont.appendChild(thumb);
+    });
+
+    function actualizarMiniaturas() {
+      miniaturasCont.querySelectorAll('img').forEach((img, i) => {
+        img.classList.toggle('selected', i === indexActual);
+      });
+    }
+
+    // -------------------- Info producto --------------------
     infoProducto.innerHTML = `
       <h2>${producto.nombre}</h2>
       <p class="precio">€${producto.precio}</p>
@@ -78,5 +110,7 @@ fetch('productos.json')
       window.actualizarCarrito();
       alert('Producto añadido al carrito');
     });
+
   })
   .catch(err => console.error("Error cargando producto:", err));
+
