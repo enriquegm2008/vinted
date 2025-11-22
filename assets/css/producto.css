@@ -1,8 +1,8 @@
 /* -------------------- Página Producto -------------------- */
 .producto-container {
   display: flex;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 5%;
+  padding: 3rem 6rem;
 }
 
 .producto-imagenes {
@@ -125,6 +125,95 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
+
+.producto-imagenes {
+  display: flex;
+  flex-direction: column; /* carrusel arriba, miniaturas abajo */
+  align-items: flex-end;  /* pega todo a la derecha */
+  gap: 10px;
+  width: auto;           /* que no se expanda demasiado */
+  max-width: 500px;
+}
+
+/* Carrusel principal */
+.producto-imagenes .carrusel {
+  width: 100%;           /* tamaño fijo */
+  height: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0,255,255,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255,255,255,0.05);
+}
+
+.producto-imagenes .carrusel img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Miniaturas debajo */
+.producto-imagenes .miniaturas {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.producto-imagenes .miniaturas img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.producto-imagenes .miniaturas img.selected {
+  border-color: #00f0ff;
+}
+
+
+
+
+
+.producto-imagenes .flecha {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.producto-imagenes .flecha.izquierda { left: 10px; }
+.producto-imagenes .flecha.derecha { right: 10px; }
+
+
+.producto-imagenes .miniaturas img.selected {
+  border-color: #00f0ff;
+}
+
+.carrusel .flecha.izquierda {
+  left: 10px;
+}
+
+.carrusel .flecha.derecha {
+  right: 10px;
+}
+
+.carrusel .flecha:hover {
+  background-color: rgba(255,165,0,0.8);
+}
+
 
 /* Móvil: botones apilados */
 @media (max-width: 600px) {
