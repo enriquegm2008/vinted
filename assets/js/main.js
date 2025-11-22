@@ -25,6 +25,7 @@ window.actualizarCarrito = function() {
   const btnPagar = document.getElementById('btn-pagar');
   if(btnPagar) btnPagar.href = total > 0 ? `https://paypal.me/tuusuario/${total.toFixed(2)}` : '#';
 
+  // Eliminar productos
   lista.querySelectorAll('.eliminar').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.dataset.id);
@@ -73,21 +74,24 @@ fetch('productos.json')
       card.classList.add('producto-card');
       card.innerHTML = `
         <img src="${producto.imagen}" alt="${producto.nombre}">
-        <h2>${producto.nombre}</h2>
-        <p>Talla: ${producto.talla}</p>
-        <p>Estado: ${producto.estado}</p>
-        <p>Precio: €${producto.precio}</p>
+        <div class="fila-superior">
+          <span class="marca">${producto.marca || ''}</span>
+          <span class="talla">${producto.talla}</span>
+        </div>
+        <p class="precio">€${producto.precio}</p>
       `;
 
+      // Redirigir a producto.html al clicar en la tarjeta
       card.addEventListener('click', () => {
         window.location.href = `producto.html?id=${producto.id}`;
       });
 
+      // Botón añadir al carrito
       const btnComprar = document.createElement('button');
       btnComprar.classList.add('btn', 'btn-comprar');
       btnComprar.textContent = 'Añadir al carrito';
       btnComprar.addEventListener('click', (e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // importante para no activar el click de la tarjeta
         agregarAlCarrito(producto);
         alert('Producto añadido al carrito');
       });
