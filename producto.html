@@ -6,13 +6,24 @@
   <title>Detalle del Producto</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/producto.css">
+  <style>
+    /* Efecto hover en el logo */
+    header h1 {
+      cursor: pointer;
+      transition: transform 0.3s;
+      color: #00f0ff;
+      text-shadow: 0 0 10px #00f0ff;
+    }
+    header h1:hover {
+      transform: scale(1.2);
+    }
+  </style>
 </head>
 <body>
 
   <!-- -------------------- HEADER -------------------- -->
   <header>
-    <h1>Mi Tienda</h1>
-    <p>Ropa de segunda mano / Tu estilo</p>
+    <h1 id="logo">Mi Tienda</h1>
 
     <!-- Carrito desplegable -->
     <div id="carrito-header" class="carrito-header">
@@ -25,60 +36,49 @@
         <a id="btn-pagar" href="#" target="_blank" class="btn">Pagar con PayPal</a>
         </div>
     </div>
-
-    <!-- Menú de pestañas -->
-    <nav class="tabs">
-        <button class="tab-btn active" data-tab="inicio">Inicio</button>
-        <button class="tab-btn" data-tab="novedad">Novedad</button>
-        <button class="tab-btn" data-tab="ofertas">Ofertas</button>
-    </nav>
   </header>
 
-
   <!-- -------------------- CONTENIDO DEL PRODUCTO -------------------- -->
-  <main class="producto-container">
-    <div class="producto-imagenes">
-        <div class="carrusel"></div>
-        <div class="miniaturas"></div>
+  <main>
+    <div class="tab-content" id="producto-detalle" style="display:block;">
+      <div class="producto-container">
+        <div class="producto-imagenes">
+          <div class="carrusel">
+            <button class="flecha izquierda">&#10094;</button>
+            <img src="" alt="Producto" class="imagen-activa">
+            <button class="flecha derecha">&#10095;</button>
+          </div>
+          <div class="miniaturas"></div>
+        </div>
+        <div class="producto-info"></div>
+      </div>
     </div>
-    <div class="producto-info"></div>
   </main>
-
 
   <footer>
     <p>Contacta: @tuInstagram | Hecho con ❤️</p>
   </footer>
 
-    <script src="assets/js/carrito.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/producto.js"></script>
-    <script>
-  // Seleccionar todos los botones de pestañas y los contenidos
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
+  <!-- Scripts -->
+  <script src="assets/js/carrito.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/producto.js"></script>
 
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Quitar clase 'active' a todos los botones
-      tabButtons.forEach(b => b.classList.remove('active'));
-      // Activar el botón clicado
-      btn.classList.add('active');
+  <script>
+    // Redirigir al clicar en el logo
+    const logo = document.getElementById('logo');
+    if(logo){
+      logo.addEventListener('click', () => {
+        window.location.href = 'index.html';
+      });
+    }
 
-      // Ocultar todos los contenidos
-      tabContents.forEach(tab => tab.style.display = 'none');
-
-      // Mostrar contenido correspondiente
-      const target = document.getElementById(btn.dataset.tab);
-      if (target) target.style.display = 'block';
+    // Solo mostramos el contenedor del producto
+    document.addEventListener('DOMContentLoaded', () => {
+      const productoTab = document.getElementById('producto-detalle');
+      if(productoTab) productoTab.style.display = 'block';
     });
-  });
-
-  // Opcional: mostrar la pestaña inicial 'Inicio' al cargar la página
-  document.addEventListener('DOMContentLoaded', () => {
-    const inicioTab = document.querySelector('.tab-btn[data-tab="inicio"]');
-    if (inicioTab) inicioTab.click();
-  });
-</script>
+  </script>
 
 </body>
 </html>
