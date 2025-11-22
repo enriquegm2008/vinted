@@ -2,30 +2,33 @@
   {
     "id": 1,
     "nombre": "Camiseta Azul",
+    "marca": "Zara",
     "precio": 20,
     "talla": "M",
     "estado": "Nuevo",
     "color": "Azul",
     "descripcion": "Camiseta 100% algodón, cómoda y ligera.",
-    "imagen": "assets/img/camiseta-azul.jpg",
+    "imagen": "assets/img/camiseta-azul.png",
     "imagenes": [
-      "assets/img/camiseta-azul.jpg",
-      "assets/img/camiseta-azul-2.jpg"
+      "assets/img/camiseta-azul.png",
+      "assets/img/camiseta-azul-2.png"
     ]
   },
   {
     "id": 2,
     "nombre": "Pantalón Negro",
+    "marca": "Nike",
     "precio": 35,
     "talla": "L",
     "estado": "Usado",
     "color": "Negro",
     "descripcion": "Pantalón elegante, perfecto para oficina o eventos.",
-    "imagen": "assets/img/pantalon-negro.jpg"
+    "imagen": "assets/img/camiseta-azul-2.png"
   },
   {
     "id": 3,
     "nombre": "Sudadera Gris",
+    "marca": "Adidas",
     "precio": 25,
     "talla": "S",
     "estado": "Nuevo",
@@ -41,6 +44,7 @@
   {
     "id": 4,
     "nombre": "Zapatos Deportivos",
+    "marca": "Puma",
     "precio": 50,
     "talla": "42",
     "estado": "Nuevo",
