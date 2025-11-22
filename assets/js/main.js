@@ -13,21 +13,34 @@ window.actualizarCarrito = function() {
 
     const li = document.createElement('li');
     li.innerHTML = `
-      ${item.nombre} x${item.cantidad} - €${(item.precio*item.cantidad).toFixed(2)}
-      <button class="eliminar" data-id="${item.id}">x</button>
+      <div class="carrito-item-grid">
+        <div class="col-info">
+          <span class="nombre">${item.nombre}</span>
+          <span class="marca-talla">${item.marca || 'Sin marca'} - ${item.talla}</span>
+        </div>
+
+        <div class="col-cantidad">
+          <select class="cantidad-selector" data-id="${item.id}">
+            ${[1,2,3,4,5].map(n => `
+              <option value="${n}" ${n === item.cantidad ? "selected" : ""}>${n}</option>
+            `).join('')}
+          </select>
+        </div>
+
+        <div class="col-precio">
+          ${(item.precio * item.cantidad).toFixed(2)} €
+        </div>
+
+        <button class="eliminar" data-id="${item.id}">×</button>
+      </div>
     `;
     lista.appendChild(li);
   });
 
-  const totalElem = document.getElementById('total');
-  if(totalElem) totalElem.textContent = total.toFixed(2);
-
-  const btnPagar = document.getElementById('btn-pagar');
-  if(btnPagar) btnPagar.href = total > 0 ? `https://paypal.me/tuusuario/${total.toFixed(2)}` : '#';
-
-  // Eliminar productos
+  // Eventos eliminar
   lista.querySelectorAll('.eliminar').forEach(btn => {
     btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const id = parseInt(e.target.dataset.id);
       window.carrito = window.carrito.filter(p => p.id !== id);
       localStorage.setItem('carrito', JSON.stringify(window.carrito));
@@ -35,26 +48,55 @@ window.actualizarCarrito = function() {
     });
   });
 
-  // Actualizar contador del header
+  // Selector cantidades
+  lista.querySelectorAll('.cantidad-selector').forEach(select => {
+    select.addEventListener('change', (e) => {
+      const id = parseInt(e.target.dataset.id);
+      const producto = window.carrito.find(p => p.id === id);
+      producto.cantidad = parseInt(e.target.value);
+      localStorage.setItem('carrito', JSON.stringify(window.carrito));
+      window.actualizarCarrito();
+    });
+  });
+
+  // Contador carrito
   const contador = document.getElementById('carrito-count');
-  if(contador) contador.textContent = window.carrito.reduce((sum, p) => sum + p.cantidad, 0);
+  if(contador) contador.textContent = window.carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
+  // Precio final sin "Total:"
+  const totalElem = document.getElementById('total');
+  if(totalElem) totalElem.textContent = `${total.toFixed(2)} €`;
+
+  const btnPagar = document.getElementById('btn-pagar');
+  if(btnPagar) btnPagar.href = total > 0 ? `https://paypal.me/tuusuario/${total.toFixed(2)}` : '#';
 };
 
 // Llamada inicial
 window.actualizarCarrito();
 
 // -------------------- Carrito desplegable --------------------
-const btnCarrito = document.getElementById('btn-carrito');
-const menuCarrito = document.getElementById('menu-carrito');
-
-if(btnCarrito && menuCarrito) {
+const btnCerrar = document.getElementById('btn-cerrar-carrito'); // botón cerrar
+if(typeof btnCarrito !== 'undefined' && menuCarrito) {
+  // Al abrir/cerrar carrito
   btnCarrito.addEventListener('click', () => {
     menuCarrito.classList.toggle('visible');
+    if(btnCerrar) btnCerrar.style.display = menuCarrito.classList.contains('visible') ? 'flex' : 'none';
   });
 
+  // Botón cerrar
+  if(btnCerrar) {
+    btnCerrar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuCarrito.classList.remove('visible');
+      btnCerrar.style.display = 'none';
+    });
+  }
+
+  // Cerrar al hacer click fuera
   document.addEventListener('click', (e) => {
     if (!menuCarrito.contains(e.target) && e.target !== btnCarrito) {
       menuCarrito.classList.remove('visible');
+      if(btnCerrar) btnCerrar.style.display = 'none';
     }
   });
 }
@@ -91,7 +133,7 @@ fetch('productos.json')
       btnComprar.classList.add('btn', 'btn-comprar');
       btnComprar.textContent = 'Añadir al carrito';
       btnComprar.addEventListener('click', (e) => {
-        e.stopPropagation(); // importante para no activar el click de la tarjeta
+        e.stopPropagation();
         agregarAlCarrito(producto);
         alert('Producto añadido al carrito');
       });
@@ -114,3 +156,4 @@ function agregarAlCarrito(producto) {
   localStorage.setItem('carrito', JSON.stringify(window.carrito));
   window.actualizarCarrito();
 }
+
